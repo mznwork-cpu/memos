@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // 各画面を読み込む
 import Master from "./Master";
-import Shopping from "./Shopping12";
+import Shopping from "./Shopping";
 import History from "./History";
 
 function App() {
