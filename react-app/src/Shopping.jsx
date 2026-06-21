@@ -1,23 +1,25 @@
-// 状態管理
+// Reactの状態管理
 import { useState, useEffect } from "react";
 
-// Supabase
+// Supabase接続
 import { supabase } from "./supabase";
 
 function Shopping() {
 
-  // 買物対象
+  // 買物対象の商品一覧
   const [items, setItems] = useState([]);
 
-  // 入力値をまとめて管理
+  // 各商品の入力状態をまとめて管理
   const [dataMap, setDataMap] = useState({});
 
+  // 初回ロード
   useEffect(() => {
     loadItems();
   }, []);
 
-  // チェックされた商品だけ取得
+  // 買物対象（checked=true）を取得＋初期値設定
   const loadItems = async () => {
+
     const { data } = await supabase
       .from("items")
       .select("*")
@@ -26,25 +28,37 @@ function Shopping() {
       .order("name");
 
     setItems(data || []);
+
+    // 入力初期値
+    const initial = {};
+    (data || []).forEach(item => {
+      initial[item.id] = {
+        quantity: 1,                  // 数量初期値
+        price: item.last_price || "", // 前回価格
+        note: "",
+        _checked: false              // 購入対象チェック
+      };
+    });
+
+    setDataMap(initial);
   };
 
-  // 購入確定
+  // 購入確定処理
   const purchaseAll = async () => {
 
     for (const item of items) {
 
       const data = dataMap[item.id];
 
-      // チェックされてないものはスキップ
+      // チェックされていないものはスキップ
       if (!data?._checked) continue;
 
       const price = data.price || item.last_price || 0;
       const note = data.note || "";
       const quantity = Number(data.quantity) || 1;
 
-      // 数量分INSERT
+      // 数量分だけ履歴登録
       for (let i = 0; i < quantity; i++) {
-
         await supabase
           .from("purchase_history")
           .insert([
@@ -56,7 +70,7 @@ function Shopping() {
           ]);
       }
 
-      // マスタ更新
+      // 商品マスタ更新
       await supabase
         .from("items")
         .update({
@@ -67,7 +81,7 @@ function Shopping() {
         .eq("id", item.id);
     }
 
-    setDataMap({});
+    // 再読み込み
     loadItems();
   };
 
@@ -76,81 +90,129 @@ function Shopping() {
 
       <h1>買物リスト</h1>
 
-      <ul>
-        {items.map((item) => (
-          <li key={item.id} style={{ marginBottom: 12 }}>
+      {/* 商品一覧 */}
+      {items.map((item) => (
+        <div className="card" key={item.id}>
 
-            {/* 1行目 */}
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <input
-                type="checkbox"
-                checked={dataMap[item.id]?._checked || false}
-                onChange={(e) =>
-                  setDataMap({
-                    ...dataMap,
-                    [item.id]: {
-                      ...dataMap[item.id],
-                      _checked: e.target.checked
-                    }
-                  })
-                }
-              />
-              <div>{item.category} / {item.name}</div>
-              <div>前回: {item.last_price || "-"} 円</div>
+          {/* 上段：チェック＋商品名 */}
+          <div className="row-top">
+
+            <input
+              type="checkbox"
+              checked={dataMap[item.id]?._checked || false}
+              onChange={(e) =>
+                setDataMap(prev => ({
+                  ...prev,
+                  [item.id]: {
+                    ...(prev[item.id] || {}),
+                    _checked: e.target.checked
+                  }
+                }))
+              }
+            />
+
+            <div className="name">
+              {item.category} / {item.name}
             </div>
 
-            {/* 2行目 */}
-            <div style={{ display: "flex", gap: 10 }}>
-              <input
-                placeholder="数量"
-                type="number"
-                value={(dataMap[item.id]?.quantity) || ""}
-                onChange={(e) =>
-                  setDataMap({
-                    ...dataMap,
+          </div>
+
+          {/* 前回価格 */}
+          <div className="sub">
+            前回: {item.last_price || "-"} 円
+          </div>
+
+          {/* 数量（ボタン操作） */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
+
+            <button
+              onClick={() =>
+                setDataMap(prev => {
+                  const current = Number(prev[item.id]?.quantity || 1);
+                  const next = Math.max(1, current - 1);
+
+                  return {
+                    ...prev,
                     [item.id]: {
-                      ...dataMap[item.id],
-                      quantity: e.target.value
+                      ...(prev[item.id] || {}),
+                      quantity: next
                     }
-                  })
-                }
-              />
+                  };
+                })
+              }
+            >
+              −
+            </button>
 
-              <input
-                placeholder="価格"
-                type="number"
-                value={(dataMap[item.id]?.price) || ""}
-                onChange={(e) =>
-                  setDataMap({
-                    ...dataMap,
+            <div>{dataMap[item.id]?.quantity || 1}</div>
+
+            <button
+              onClick={() =>
+                setDataMap(prev => {
+                  const current = Number(prev[item.id]?.quantity || 1);
+
+                  return {
+                    ...prev,
                     [item.id]: {
-                      ...dataMap[item.id],
-                      price: e.target.value
+                      ...(prev[item.id] || {}),
+                      quantity: current + 1
                     }
-                  })
-                }
-              />
+                  };
+                })
+              }
+            >
+              ＋
+            </button>
 
-              <input
-                placeholder="備考"
-                value={(dataMap[item.id]?.note) || ""}
-                onChange={(e) =>
-                  setDataMap({
-                    ...dataMap,
-                    [item.id]: {
-                      ...dataMap[item.id],
-                      note: e.target.value
-                    }
-                  })
-                }
-              />
-            </div>
+          </div>
 
-          </li>
-        ))}
-      </ul>
+          {/* 価格＋備考 */}
+          <div className="row-bottom">
 
-      <button onClick={purchaseAll}>購入確定</button>
+            {/* 価格 */}
+            <input
+              className="price"
+              placeholder="価格"
+              type="number"
+              value={dataMap[item.id]?.price || ""}
+              onChange={(e) => {
+                const val = e.target.value.slice(0, 5); // 5桁制限
+
+                setDataMap(prev => ({
+                  ...prev,
+                  [item.id]: {
+                    ...(prev[item.id] || {}),
+                    price: val
+                  }
+                }));
+              }}
+            />
+
+            {/* 備考 */}
+            <input
+              className="note"
+              placeholder="備考"
+              value={dataMap[item.id]?.note || ""}
+              onChange={(e) =>
+                setDataMap(prev => ({
+                  ...prev,
+                  [item.id]: {
+                    ...(prev[item.id] || {}),
+                    note: e.target.value
+                  }
+                }))
+              }
+            />
+
+          </div>
+
+        </div>
+      ))}
+
+      {/* 購入確定 */}
+      <button style={{ marginTop: 10 }} onClick={purchaseAll}>
+        購入確定
+      </button>
 
     </div>
   );
