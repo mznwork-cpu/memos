@@ -151,7 +151,19 @@ function History() {
                 編集
               </button>
 
-              <button onClick={() => deleteItem(h.id)}>
+              <button
+                style={{
+                  backgroundColor: "#e74c3c",
+                  marginLeft: 6
+                }}
+                onClick={() => {
+                  const ok = window.confirm("削除してもいいですか？");
+
+                    if (ok) {
+                      deleteItem(h.id);
+                    }
+                }}
+              >
                 削除
               </button>
 
