@@ -122,90 +122,90 @@ function Shopping() {
             前回: {item.last_price || "-"} 円
           </div>
 
-          {/* 数量（ボタン操作） */}
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
-
-            <button
-              onClick={() =>
-                setDataMap(prev => {
+          {/* 数量＋価格（同じ段） */}
+          <div className="row-bottom">
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              {/* −ボタン */}
+              <button
+                onClick={() =>
+                  setDataMap(prev => {
                   const current = Number(prev[item.id]?.quantity || 1);
-                  const next = Math.max(1, current - 1);
-
                   return {
                     ...prev,
                     [item.id]: {
-                      ...(prev[item.id] || {}),
-                      quantity: next
+                    ...(prev[item.id] || {}),
+                    quantity: Math.max(1, current - 1)
                     }
                   };
-                })
-              }
-            >
-              −
+                  })
+                }
+              >
+            −
             </button>
 
+            {/* 数量 */}
             <div>{dataMap[item.id]?.quantity || 1}</div>
 
+            {/* ＋ボタン */}
             <button
               onClick={() =>
                 setDataMap(prev => {
                   const current = Number(prev[item.id]?.quantity || 1);
-
                   return {
                     ...prev,
                     [item.id]: {
                       ...(prev[item.id] || {}),
-                      quantity: current + 1
+                    quantity: current + 1
                     }
                   };
                 })
               }
             >
-              ＋
-            </button>
+          ＋
+        </button>
 
-          </div>
+        </div>
 
-          {/* 価格＋備考 */}
-          <div className="row-bottom">
+         {/* 価格 */}
+         <input
+          className="price"
+          placeholder="価格"
+          type="number"
+          value={dataMap[item.id]?.price || ""}
+          onChange={(e) => {
+            const val = e.target.value.slice(0, 5);
 
-            {/* 価格 */}
-            <input
-              className="price"
-              placeholder="価格"
-              type="number"
-              value={dataMap[item.id]?.price || ""}
-              onChange={(e) => {
-                const val = e.target.value.slice(0, 5); // 5桁制限
+              setDataMap(prev => ({
+               ...prev,
+                [item.id]: {
+                ...(prev[item.id] || {}),
+                price: val
+                }
+            }));
+          }}
+        />
 
-                setDataMap(prev => ({
-                  ...prev,
-                  [item.id]: {
-                    ...(prev[item.id] || {}),
-                    price: val
-                  }
-                }));
-              }}
-            />
+        </div>
 
-            {/* 備考 */}
-            <input
-              className="note"
-              placeholder="備考"
-              value={dataMap[item.id]?.note || ""}
-              onChange={(e) =>
-                setDataMap(prev => ({
-                  ...prev,
-                  [item.id]: {
-                    ...(prev[item.id] || {}),
+          {/* 備考（別段） */}
+            <div style={{ marginTop: 6 }}>
+
+              <input
+                className="note"
+                placeholder="備考"
+                value={dataMap[item.id]?.note || ""}
+                onChange={(e) =>
+                  setDataMap(prev => ({
+                   ...prev,
+                    [item.id]: {
+                      ...(prev[item.id] || {}),
                     note: e.target.value
-                  }
-                }))
-              }
-            />
+                   }
+                  }))
+                } 
+              />
 
           </div>
-
         </div>
       ))}
 

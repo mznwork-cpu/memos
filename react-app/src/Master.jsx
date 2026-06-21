@@ -15,15 +15,20 @@ function Master() {
   const [price, setPrice] = useState("");
   const [note, setNote] = useState("");
 
-  // カテゴリ候補一覧
+  // カテゴリ候補
   const [categories, setCategories] = useState([]);
+
+  // 編集用
+  const [editingId, setEditingId] = useState(null);
+  const [editCategory, setEditCategory] = useState("");
+  const [editName, setEditName] = useState("");
 
   // 初回ロード
   useEffect(() => {
     loadItems();
   }, []);
 
-  // 商品一覧取得＋カテゴリ一覧作成
+  // 商品取得＋カテゴリ一覧作成
   const loadItems = async () => {
 
     const { data } = await supabase
@@ -34,11 +39,12 @@ function Master() {
 
     setItems(data || []);
 
-    // カテゴリ一覧を作成（重複除去）
+    // カテゴリ一覧（重複除去）
     const uniqueCategories = [
-      ...new Set((data || [])
-        .map(i => i.category)
-        .filter(Boolean)
+      ...new Set(
+        (data || [])
+          .map(i => i.category)
+          .filter(Boolean)
       )
     ];
 
@@ -61,7 +67,6 @@ function Master() {
         }
       ]);
 
-    // 入力リセット
     setCategory("");
     setName("");
     setPrice("");
@@ -70,7 +75,7 @@ function Master() {
     loadItems();
   };
 
-  // チェック切替（買物対象）
+  // チェック切替
   const toggleCheck = async (item) => {
 
     await supabase
@@ -83,10 +88,32 @@ function Master() {
     loadItems();
   };
 
+  // 編集開始
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setEditCategory(item.category);
+    setEditName(item.name);
+  };
+
+  // 編集保存
+  const saveEdit = async (item) => {
+
+    await supabase
+      .from("items")
+      .update({
+        category: editCategory,
+        name: editName
+      })
+      .eq("id", item.id);
+
+    setEditingId(null);
+    loadItems();
+  };
+
   return (
     <div>
 
-      <h1>商品マスタ</h1>
+      <h1>商品リスト</h1>
 
       {/* 入力フォーム */}
       <div className="card">
@@ -100,7 +127,6 @@ function Master() {
             onChange={(e) => setCategory(e.target.value)}
           />
 
-          {/* 候補表示（入力値に応じて絞り込み） */}
           {category && (
             <div style={{
               position: "absolute",
@@ -108,19 +134,15 @@ function Master() {
               border: "1px solid #ccc",
               borderRadius: "8px",
               width: "100%",
-              marginTop: 2,
-              zIndex: 10
+              marginTop: 2
             }}>
               {categories
                 .filter(c => c.includes(category))
-                .slice(0, 5) // 最大5件表示
+                .slice(0, 5)
                 .map((c, i) => (
                   <div
                     key={i}
-                    style={{
-                      padding: "8px",
-                      cursor: "pointer"
-                    }}
+                    style={{ padding: "8px", cursor: "pointer" }}
                     onClick={() => setCategory(c)}
                   >
                     {c}
@@ -160,11 +182,10 @@ function Master() {
 
       </div>
 
-      {/* 一覧 */}
+      {/* 商品一覧 */}
       {items.map((item) => (
         <div className="card" key={item.id}>
 
-          {/* 上段 */}
           <div className="row-top">
 
             <input
@@ -173,19 +194,51 @@ function Master() {
               onChange={() => toggleCheck(item)}
             />
 
-            <div className="name">
-              {item.category} / {item.name}
+            <div style={{ flex: 1, textAlign: "left" }}>
+
+              {editingId === item.id ? (
+                <>
+                  {/* 編集モード */}
+                  <input
+                    value={editCategory}
+                    onChange={(e) => setEditCategory(e.target.value)}
+                  />
+
+                  <input
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                  />
+
+                  <button onClick={() => saveEdit(item)}>
+                    保存
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* 表示モード */}
+                  <div className="name">
+                    {item.category} / {item.name}
+                  </div>
+
+                  <div className="sub">
+                    {item.last_price || "-"} 円 / {item.last_purchased_date || "-"}
+                  </div>
+
+                  <div className="sub">
+                    {item.note}
+                  </div>
+                </>
+              )}
+
             </div>
 
-          </div>
+            {/* 編集ボタン */}
+            {editingId !== item.id && (
+              <button onClick={() => startEdit(item)}>
+                編集
+              </button>
+            )}
 
-          {/* 下段情報 */}
-          <div className="sub">
-            {item.last_price || "-"} 円 / {item.last_purchased_date || "-"}
-          </div>
-
-          <div className="sub">
-            {item.note}
           </div>
 
         </div>
@@ -196,3 +249,4 @@ function Master() {
 }
 
 export default Master;
+``
