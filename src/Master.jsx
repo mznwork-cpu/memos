@@ -9,13 +9,13 @@ function Master() {
   // 商品一覧
   const [items, setItems] = useState([]);
 
-  // 入力値
+  // 入力（新規追加）
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [note, setNote] = useState("");
 
-  // カテゴリ候補
+  // カテゴリ候補（重複なし）
   const [categories, setCategories] = useState([]);
 
   // 編集用
@@ -28,7 +28,7 @@ function Master() {
     loadItems();
   }, []);
 
-  // 商品取得＋カテゴリ一覧作成
+  // 商品取得＋カテゴリ一覧生成
   const loadItems = async () => {
 
     const { data } = await supabase
@@ -56,17 +56,16 @@ function Master() {
 
     if (!name) return;
 
-    await supabase
-      .from("items")
-      .insert([
-        {
-          name,
-          category,
-          last_price: price || null,
-          note
-        }
-      ]);
+    await supabase.from("items").insert([
+      {
+        name,
+        category,
+        last_price: price || null,
+        note
+      }
+    ]);
 
+    // 入力リセット
     setCategory("");
     setName("");
     setPrice("");
@@ -80,9 +79,7 @@ function Master() {
 
     await supabase
       .from("items")
-      .update({
-        checked: !item.checked
-      })
+      .update({ checked: !item.checked })
       .eq("id", item.id);
 
     loadItems();
@@ -91,8 +88,8 @@ function Master() {
   // 編集開始
   const startEdit = (item) => {
     setEditingId(item.id);
-    setEditCategory(item.category);
-    setEditName(item.name);
+    setEditCategory(item.category || "");
+    setEditName(item.name || "");
   };
 
   // 編集保存
@@ -115,44 +112,23 @@ function Master() {
 
       <h1>商品リスト</h1>
 
-      {/* 入力フォーム */}
+      {/* ===== 追加フォーム ===== */}
       <div className="card">
 
-        {/* カテゴリ入力＋候補 */}
-        <div style={{ position: "relative" }}>
+        {/* カテゴリ（入力＋候補） */}
+        <input
+          list="category-list"
+          placeholder="分類"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
 
-          <input
-            placeholder="分類"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-
-          {category && (
-            <div style={{
-              position: "absolute",
-              background: "white",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              width: "100%",
-              marginTop: 2
-            }}>
-              {categories
-                .filter(c => c.includes(category))
-                .slice(0, 5)
-                .map((c, i) => (
-                  <div
-                    key={i}
-                    style={{ padding: "8px", cursor: "pointer" }}
-                    onClick={() => setCategory(c)}
-                  >
-                    {c}
-                  </div>
-                ))
-              }
-            </div>
-          )}
-
-        </div>
+        {/* datalist（候補） */}
+        <datalist id="category-list">
+          {categories.map((c, i) => (
+            <option key={i} value={c} />
+          ))}
+        </datalist>
 
         {/* 商品名 */}
         <input
@@ -182,12 +158,13 @@ function Master() {
 
       </div>
 
-      {/* 商品一覧 */}
+      {/* ===== 一覧 ===== */}
       {items.map((item) => (
         <div className="card" key={item.id}>
 
           <div className="row-top">
 
+            {/* 買物チェック */}
             <input
               type="checkbox"
               checked={item.checked}
@@ -198,12 +175,16 @@ function Master() {
 
               {editingId === item.id ? (
                 <>
-                  {/* 編集モード */}
+                  {/* ===== 編集モード ===== */}
+
+                  {/* カテゴリ編集（コンボボックス） */}
                   <input
+                    list="category-list"
                     value={editCategory}
                     onChange={(e) => setEditCategory(e.target.value)}
                   />
 
+                  {/* 商品名編集 */}
                   <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
@@ -212,10 +193,12 @@ function Master() {
                   <button onClick={() => saveEdit(item)}>
                     保存
                   </button>
+
                 </>
               ) : (
                 <>
-                  {/* 表示モード */}
+                  {/* ===== 表示モード ===== */}
+
                   <div className="name">
                     {item.category} / {item.name}
                   </div>
@@ -227,6 +210,7 @@ function Master() {
                   <div className="sub">
                     {item.note}
                   </div>
+
                 </>
               )}
 
