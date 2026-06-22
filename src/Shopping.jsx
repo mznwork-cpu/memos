@@ -116,7 +116,7 @@ function Shopping() {
           top: 20,
           left: "50%",
           transform: "translateX(-50%)",
-          background: "#2ecc71",
+          background: "#a57409",
           color: "#fff",
           padding: "10px 16px",
           borderRadius: "20px",
