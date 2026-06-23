@@ -1,67 +1,67 @@
-// Reactの状態管理
 import { useState, useEffect } from "react";
-
-// Supabase接続
 import { supabase } from "./supabase";
 
 function Master() {
 
-  // 商品一覧
+  // 商品一覧（type=1：買物のみ）
   const [items, setItems] = useState([]);
 
-  // 入力（新規追加）
+  // 新規登録フォームの入力値
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [note, setNote] = useState("");
 
-  // カテゴリ候補（重複なし）
+  // 既存カテゴリ一覧（重複なしで生成）
   const [categories, setCategories] = useState([]);
 
-  // 編集用
+  // 編集状態管理
   const [editingId, setEditingId] = useState(null);
   const [editCategory, setEditCategory] = useState("");
   const [editName, setEditName] = useState("");
 
-  // 初回ロード
+  // 初回表示時にデータ取得
   useEffect(() => {
     loadItems();
   }, []);
 
-  // 商品取得＋カテゴリ一覧生成
+  // 商品一覧取得（買物データのみ）
   const loadItems = async () => {
 
     const { data } = await supabase
       .from("items")
       .select("*")
+      .eq("type", 1)               // type=1：買物データ
       .order("category")
       .order("name");
 
     setItems(data || []);
 
-    // カテゴリ一覧（重複除去）
+    // カテゴリ候補を生成（重複除去）
+    // 入力補助（コンボボックス）用
     const uniqueCategories = [
-      ...new Set(
-        (data || [])
-          .map(i => i.category)
-          .filter(Boolean)
+      ...new Set((data || [])
+        .map(i => i.category)
+        .filter(Boolean)
       )
     ];
 
     setCategories(uniqueCategories);
   };
 
-  // 商品追加
+  // 商品追加処理
   const addItem = async () => {
 
+    // 商品名が空なら登録しない
     if (!name) return;
 
     await supabase.from("items").insert([
       {
         name,
         category,
-        last_price: price || null,
-        note
+        last_price: price || null, // 初回価格として登録
+        note,
+        type: 1                     // 買物データとして登録
       }
     ]);
 
@@ -71,21 +71,26 @@ function Master() {
     setPrice("");
     setNote("");
 
+    // 再読み込み（一覧更新）
     loadItems();
   };
 
-  // チェック切替
+  // 買物対象チェック切替
+  // → チェックすると買物リストに表示される
   const toggleCheck = async (item) => {
 
     await supabase
       .from("items")
-      .update({ checked: !item.checked })
+      .update({
+        checked: !item.checked
+      })
       .eq("id", item.id);
 
     loadItems();
   };
 
   // 編集開始
+  // → 編集用stateに値をコピー
   const startEdit = (item) => {
     setEditingId(item.id);
     setEditCategory(item.category || "");
@@ -103,7 +108,9 @@ function Master() {
       })
       .eq("id", item.id);
 
+    // 編集モード解除
     setEditingId(null);
+
     loadItems();
   };
 
@@ -112,10 +119,10 @@ function Master() {
 
       <h1>商品リスト</h1>
 
-      {/* ===== 追加フォーム ===== */}
+      {/* ===== 新規登録フォーム ===== */}
       <div className="card">
 
-        {/* カテゴリ（入力＋候補） */}
+        {/* カテゴリ（入力＋候補選択） */}
         <input
           list="category-list"
           placeholder="分類"
@@ -123,7 +130,7 @@ function Master() {
           onChange={(e) => setCategory(e.target.value)}
         />
 
-        {/* datalist（候補） */}
+        {/* カテゴリ候補（datalist） */}
         <datalist id="category-list">
           {categories.map((c, i) => (
             <option key={i} value={c} />
@@ -139,8 +146,8 @@ function Master() {
 
         {/* 単価 */}
         <input
-          placeholder="単価"
           type="number"
+          placeholder="単価"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
@@ -152,39 +159,36 @@ function Master() {
           onChange={(e) => setNote(e.target.value)}
         />
 
-        <button onClick={addItem}>
-          追加
-        </button>
+        <button onClick={addItem}>追加</button>
 
       </div>
 
-      {/* ===== 一覧 ===== */}
+      {/* ===== 商品一覧 ===== */}
       {items.map((item) => (
         <div className="card" key={item.id}>
 
           <div className="row-top">
 
-            {/* 買物チェック */}
+            {/* チェック：買物対象 */}
             <input
               type="checkbox"
               checked={item.checked}
               onChange={() => toggleCheck(item)}
             />
 
+            {/* 商品情報表示 */}
             <div style={{ flex: 1, textAlign: "left" }}>
 
               {editingId === item.id ? (
                 <>
-                  {/* ===== 編集モード ===== */}
+                  {/* === 編集モード === */}
 
-                  {/* カテゴリ編集（コンボボックス） */}
                   <input
                     list="category-list"
                     value={editCategory}
                     onChange={(e) => setEditCategory(e.target.value)}
                   />
 
-                  {/* 商品名編集 */}
                   <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
@@ -197,7 +201,7 @@ function Master() {
                 </>
               ) : (
                 <>
-                  {/* ===== 表示モード ===== */}
+                  {/* === 通常表示 === */}
 
                   <div className="name">
                     {item.category} / {item.name}
@@ -210,7 +214,6 @@ function Master() {
                   <div className="sub">
                     {item.note}
                   </div>
-
                 </>
               )}
 
@@ -233,4 +236,3 @@ function Master() {
 }
 
 export default Master;
-``
