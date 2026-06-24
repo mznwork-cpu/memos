@@ -1,70 +1,135 @@
+/* =====================================================
+   ■ ルート設定（テーマ・基本スタイル）
+===================================================== */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
+  /* ---------- カラートークン ---------- */
+  /* 通常テキスト */
+  --text: #6b6375;
+
+  /* 見出し・強調テキスト */
+  --text-h: #08060d;
+
+  /* 背景色 */
+  --bg: #fff;
+
+  /* 境界線 */
+  --border: #e5e4e7;
+
+  /* コード背景 */
+  --code-bg: #f4f3ec;
+
+  /* アクセントカラー（未使用でも拡張前提） */
+  --accent: #aa3bff;
+
+  /* アクセントの薄背景 */
+  --accent-bg: rgba(170, 59, 255, 0.1);
+
+  /* アクセント境界 */
+  --accent-border: rgba(170, 59, 255, 0.5);
+
+  /* UI要素の背景（半透明） */
+  --social-bg: rgba(244, 243, 236, 0.5);
+
+  /* 共通シャドウ */
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  /* ---------- フォント ---------- */
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  /* ---------- 全体文字設定 ---------- */
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
+
+  /* light/dark両対応 */
   color-scheme: light dark;
+
+  /* テキスト・背景 */
   color: var(--text);
   background: var(--bg);
+
+  /* フォント品質調整 */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* レスポンシブ（タブレット以下） */
   @media (max-width: 1024px) {
     font-size: 16px;
   }
 }
 
+
+/* =====================================================
+   ■ ダークモード
+   OS設定に応じて自動切替
+===================================================== */
 @media (prefers-color-scheme: dark) {
   :root {
+
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
     --border: #2e303a;
     --code-bg: #1f2028;
+
     --accent: #c084fc;
     --accent-bg: rgba(192, 132, 252, 0.15);
     --accent-border: rgba(192, 132, 252, 0.5);
+
     --social-bg: rgba(47, 48, 58, 0.5);
+
     --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px,
+      rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
 
+  /* アイコンの視認性補正 */
   #social .button-icon {
     filter: invert(1) brightness(2);
   }
 }
 
+
+/* =====================================================
+   ■ ベースレイアウト
+===================================================== */
+
 body {
-  margin: 0;
+  margin: 0; /* ブラウザのデフォルト余白リセット */
 }
 
 #root {
+
+  /* アプリ中央寄せ */
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;
+
   text-align: center;
+
+  /* 左右境界線 */
   border-inline: 1px solid var(--border);
+
+  /* 画面高さ確保 */
   min-height: 100svh;
+
+  /* 縦レイアウト */
   display: flex;
   flex-direction: column;
+
   box-sizing: border-box;
 }
+
+
+/* =====================================================
+   ■ 見出し
+===================================================== */
 
 h1,
 h2 {
@@ -77,23 +142,33 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
+
+  /* スマホ対応 */
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+
   @media (max-width: 1024px) {
     font-size: 20px;
   }
 }
+
 p {
-  margin: 0;
+  margin: 0; /* 段落の余白統一 */
 }
+
+
+/* =====================================================
+   ■ コード表示
+===================================================== */
 
 code,
 .counter {
@@ -108,4 +183,53 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+
+/* =====================================================
+   ■ ModeSwitch（買物 / Todo 切替）
+===================================================== */
+
+/* 共通ボタン */
+.mode-button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+}
+
+/* 非選択 */
+.mode-button-shopping,
+.mode-button-todo {
+  background: #777;
+}
+
+/* 選択中（買物） */
+.mode-button-shopping.active {
+  background: #3498db;
+}
+
+/* 選択中（Todo） */
+.mode-button-todo.active {
+  background: #2ecc71;
+}
+
+
+/* =====================================================
+   ■ 操作ボタン（編集 / 削除）
+===================================================== */
+
+/* 編集（安全な操作） */
+.btn-edit {
+  background: #3498db;
+  color: #fff;
+  margin-left: 6px;
+}
+
+/* 削除（危険操作） */
+.btn-delete {
+  background: #e74c3c;
+  color: #fff;
+  margin-left: 6px;
 }
