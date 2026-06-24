@@ -131,7 +131,7 @@ function TodoMaster() {
   return (
     <div>
 
-      <h1>やること</h1>
+      <h1 className={"page-title todo"}>やること</h1>
 
       {/* ===== 新規登録フォーム ===== */}
       <div className="card">

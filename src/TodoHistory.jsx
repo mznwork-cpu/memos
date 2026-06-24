@@ -59,7 +59,7 @@ function TodoHistory() {
   return (
     <div>
 
-      <h1>Todo履歴</h1>
+      <h1 className={"page-title todo"}>Todo履歴</h1>
 
       {histories.map(h => (
         <div className="card" key={h.id}>

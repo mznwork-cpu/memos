@@ -116,23 +116,12 @@ function TodoList() {
 
       {/* トースト表示 */}
       {toast && (
-        <div
-          style={{
-            position: "fixed",
-            top: 20,
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "#3498db",
-            color: "#fff",
-            padding: "10px 16px",
-            borderRadius: 20
-          }}
-        >
+        <div className="toast toast-success">
           {toast}
         </div>
       )}
 
-      <h1>Todo</h1>
+      <h1 className={"page-title todo"}>Todo</h1>
 
       {/* 表示切替ボタン */}
       <button onClick={() => setShowDueOnly(v => !v)}>
@@ -170,7 +159,7 @@ function TodoList() {
           </div>
 
           {/* 経過日数と基準 */}
-          <div className="sub">
+          <div className="name">
             経過: {item.since}日 / 基準: {item.refdate}
           </div>
 

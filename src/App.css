@@ -46,6 +46,7 @@ button:hover {
 
 .mode-button {
   flex: 1;
+  min-width: 160px;
   padding: 8px;
   border-radius: 6px;
   color: #fff;
@@ -81,6 +82,32 @@ button:hover {
   background: #e74c3c;
   color: #fff;
   margin-left: 6px;
+}
+
+/* =====================================================
+   ■ 画面タイトル（h1）
+===================================================== */
+
+.page-title {
+  font-size: 24px;              /* 大きすぎない（今のUIに合わせる） */
+  font-weight: 600;             /* 少し強調 */
+  text-align: left;             /* 左寄せ（アプリっぽく） */
+
+  margin: 16px 0 12px;
+
+  color: #333;
+
+  /* 下にラインを入れる */
+  padding-bottom: 6px;
+  border-bottom: 2px solid #eee;
+}
+
+.page-title.shopping {
+  border-bottom: 2px solid #79b1d6;
+}
+
+.page-title.todo {
+  border-bottom: 2px solid #8fcca8;
 }
 
 
@@ -133,3 +160,33 @@ input {
 .sub {
   font-size: 12px;
 }
+
+/* =====================================================
+   ■ トースト（通知表示）
+===================================================== */
+
+/* ベース */
+.toast {
+  position: fixed;                /* 画面固定表示 */
+  top: 20px;
+
+  left: 50%;
+  transform: translateX(-50%);   /* 横中央寄せ */
+
+  padding: 10px 16px;
+  border-radius: 20px;
+
+  color: #fff;
+
+  z-index: 1000;                 /* 他要素より前面 */
+}
+
+/* 種類ごとの色 */
+.toast-success {
+  background: #f39c12;           /* 確定通知（オレンジ） */
+}
+
+.toast-error {
+  background: #e74c3c;           /* エラー用（赤） */
+}
+

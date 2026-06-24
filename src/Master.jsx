@@ -122,7 +122,7 @@ function Master() {
   return (
     <div>
 
-      <h1>商品リスト</h1>
+      <h1 className={"page-title shopping"}>商品リスト</h1>
 
       {/* ===== 新規登録フォーム ===== */}
       <div className="card">

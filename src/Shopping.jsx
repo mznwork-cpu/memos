@@ -108,23 +108,13 @@ function Shopping() {
     <div>
 
       {/* ===== トースト表示（画面上部に表示） ===== */}
-      {toast && (
-        <div style={{
-          position: "fixed",
-          top: 20,
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "#f39c12", // オレンジ
-          color: "#fff",
-          padding: "10px 16px",
-          borderRadius: 20,
-          zIndex: 1000
-        }}>
-          {toast}
-        </div>
-      )}
+{toast && (
+  <div className="toast toast-success">
+    {toast}
+  </div>
+)}
+      <h1 className={"page-title shopping"}>買物リスト</h1>
 
-      <h1>買物リスト</h1>
 
       {/* ===== 商品一覧 ===== */}
       {items.map(item => (

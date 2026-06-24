@@ -73,7 +73,7 @@ function History() {
   return (
     <div>
 
-      <h1>購入履歴</h1>
+      <h1 className={"page-title shopping"}>購入履歴</h1>
 
       {/* ===== 履歴一覧 ===== */}
       {histories.map(h => (
