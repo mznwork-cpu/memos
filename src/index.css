@@ -1,109 +1,42 @@
 /* =====================================================
    ■ ルート設定（テーマ・基本スタイル）
+   → アプリ全体の土台だけ
 ===================================================== */
 :root {
 
   /* ---------- カラートークン ---------- */
-  /* 通常テキスト */
   --text: #6b6375;
-
-  /* 見出し・強調テキスト */
   --text-h: #08060d;
-
-  /* 背景色 */
   --bg: #fff;
-
-  /* 境界線 */
   --border: #e5e4e7;
-
-  /* コード背景 */
   --code-bg: #f4f3ec;
-
-  /* アクセントカラー（未使用でも拡張前提） */
-  --accent: #aa3bff;
-
-  /* アクセントの薄背景 */
-  --accent-bg: rgba(170, 59, 255, 0.1);
-
-  /* アクセント境界 */
-  --accent-border: rgba(170, 59, 255, 0.5);
-
-  /* UI要素の背景（半透明） */
-  --social-bg: rgba(244, 243, 236, 0.5);
-
-  /* 共通シャドウ */
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
   /* ---------- フォント ---------- */
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
 
-  /* ---------- 全体文字設定 ---------- */
+  /* ---------- 全体設定 ---------- */
   font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-
-  /* light/dark両対応 */
-  color-scheme: light dark;
-
-  /* テキスト・背景 */
   color: var(--text);
   background: var(--bg);
-
-  /* フォント品質調整 */
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  /* レスポンシブ（タブレット以下） */
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-
-/* =====================================================
-   ■ ダークモード
-   OS設定に応じて自動切替
-===================================================== */
+/* ダークモード */
 @media (prefers-color-scheme: dark) {
   :root {
-
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
     --border: #2e303a;
     --code-bg: #1f2028;
-
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-
-    --social-bg: rgba(47, 48, 58, 0.5);
-
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px,
-      rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  /* アイコンの視認性補正 */
-  #social .button-icon {
-    filter: invert(1) brightness(2);
   }
 }
 
-
-/* =====================================================
-   ■ ベースレイアウト
-===================================================== */
-
+/* ベースリセット */
 body {
-  margin: 0; /* ブラウザのデフォルト余白リセット */
+  margin: 0;
 }
 
+/* ルートレイアウト */
 #root {
 
   /* アプリ中央寄せ */
@@ -128,7 +61,7 @@ body {
 
 
 /* =====================================================
-   ■ 見出し
+   ■ 見出し（全体共通スタイル）
 ===================================================== */
 
 h1,
@@ -143,7 +76,6 @@ h1 {
   letter-spacing: -1.68px;
   margin: 32px 0;
 
-  /* スマホ対応 */
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
@@ -161,13 +93,14 @@ h2 {
   }
 }
 
+/* 段落の余白リセット */
 p {
-  margin: 0; /* 段落の余白統一 */
+  margin: 0;
 }
 
 
 /* =====================================================
-   ■ コード表示
+   ■ コード表示（全体共通）
 ===================================================== */
 
 code,
@@ -183,53 +116,4 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
-}
-
-
-/* =====================================================
-   ■ ModeSwitch（買物 / Todo 切替）
-===================================================== */
-
-/* 共通ボタン */
-.mode-button {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-}
-
-/* 非選択 */
-.mode-button-shopping,
-.mode-button-todo {
-  background: #777;
-}
-
-/* 選択中（買物） */
-.mode-button-shopping.active {
-  background: #3498db;
-}
-
-/* 選択中（Todo） */
-.mode-button-todo.active {
-  background: #2ecc71;
-}
-
-
-/* =====================================================
-   ■ 操作ボタン（編集 / 削除）
-===================================================== */
-
-/* 編集（安全な操作） */
-.btn-edit {
-  background: #3498db;
-  color: #fff;
-  margin-left: 6px;
-}
-
-/* 削除（危険操作） */
-.btn-delete {
-  background: #e74c3c;
-  color: #fff;
-  margin-left: 6px;
 }

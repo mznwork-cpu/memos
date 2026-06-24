@@ -3,29 +3,47 @@ import { supabase } from "./supabase";
 
 function TodoList() {
 
+  // ===============================
+  // ■ State定義
+  // ===============================
+
+  // View（v_todo_list）から取得した一覧データ
   const [items, setItems] = useState([]);
+
+  // 各行ごとの入力状態（チェック・メモ）
   const [dataMap, setDataMap] = useState({});
+
+  // トースト表示用メッセージ
   const [toast, setToast] = useState("");
 
+  // 表示切替フラグ（true：期限のみ / false：全件表示）
+  const [showDueOnly, setShowDueOnly] = useState(true);
+
+  // ===============================
+  // ■ 初期ロード
+  // ===============================
   useEffect(() => {
     loadItems();
   }, []);
 
-  // 実行対象のみ（checked=true）
+  // ===============================
+  // ■ データ取得
+  // ===============================
   const loadItems = async () => {
 
+    // ViewからTodo一覧を取得
     const { data } = await supabase
-      .from("items")
+      .from("v_todo_list")
       .select("*")
-      .eq("type", 2)
-      .eq("checked", true)
       .order("category")
       .order("name");
 
-    setItems(data || []);
+    const list = data || [];
+    setItems(list);
 
+    // チェック状態とメモ入力用の初期値を作成
     const initial = {};
-    (data || []).forEach(item => {
+    list.forEach(item => {
       initial[item.id] = {
         note: "",
         _checked: false
@@ -35,20 +53,33 @@ function TodoList() {
     setDataMap(initial);
   };
 
-  // 実行確定
+  // ===============================
+  // ■ 表示用データ（フィルタ）
+  // ===============================
+  // 期限のみ or 全件表示の切り替え
+  const displayItems = showDueOnly
+    ? items.filter(i => i.is_due)
+    : items;
+
+  // ===============================
+  // ■ 実行処理
+  // ===============================
   const executeAll = async () => {
 
     try {
 
-      for (const item of items) {
+      // 表示中のリストからチェックされたものだけ処理
+      for (const item of displayItems) {
 
         const data = dataMap[item.id];
+
         if (!data?._checked) continue;
 
         const note = data.note || "";
 
+        // 履歴登録（これにより最終日が更新される）
         await supabase
-          .from("purchase_history") // 共通履歴
+          .from("purchase_history")
           .insert([
             {
               item_id: item.id,
@@ -57,6 +88,7 @@ function TodoList() {
             }
           ]);
 
+        // チェック状態をOFFにする
         await supabase
           .from("items")
           .update({ checked: false })
@@ -64,40 +96,58 @@ function TodoList() {
       }
 
       setToast("実行しました");
+
+      // データ再取得（viewの計算結果も更新される）
       loadItems();
 
     } catch (e) {
       setToast("エラーが発生しました");
     }
 
+    // トーストを一定時間で消す
     setTimeout(() => setToast(""), 3000);
   };
 
+  // ===============================
+  // ■ UI
+  // ===============================
   return (
     <div>
 
+      {/* トースト表示 */}
       {toast && (
-        <div style={{
-          position: "fixed",
-          top: 20,
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "#3498db",
-          color: "#fff",
-          padding: "10px 16px",
-          borderRadius: 20
-        }}>
+        <div
+          style={{
+            position: "fixed",
+            top: 20,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#3498db",
+            color: "#fff",
+            padding: "10px 16px",
+            borderRadius: 20
+          }}
+        >
           {toast}
         </div>
       )}
 
       <h1>Todo</h1>
 
-      {items.map(item => (
+      {/* 表示切替ボタン */}
+      <button onClick={() => setShowDueOnly(v => !v)}>
+        {showDueOnly
+          ? "期限のみ"
+          : "全件表示"}
+      </button>
+
+      {/* 一覧表示 */}
+      {displayItems.map(item => (
         <div className="card" key={item.id}>
 
           <div className="row-top">
 
+            {/* 実行チェック */}
             <input
               type="checkbox"
               checked={dataMap[item.id]?._checked || false}
@@ -112,12 +162,19 @@ function TodoList() {
               }
             />
 
+            {/* タスク表示 */}
             <div className="name">
               {item.category} / {item.name}
             </div>
 
           </div>
 
+          {/* 経過日数と基準 */}
+          <div className="sub">
+            経過: {item.since}日 / 基準: {item.refdate}
+          </div>
+
+          {/* メモ入力 */}
           <input
             placeholder="メモ"
             value={dataMap[item.id]?.note || ""}
@@ -135,7 +192,10 @@ function TodoList() {
         </div>
       ))}
 
-      <button onClick={executeAll}>実行</button>
+      {/* 実行ボタン */}
+      <button onClick={executeAll}>
+        実行
+      </button>
 
     </div>
   );

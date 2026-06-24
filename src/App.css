@@ -1,19 +1,15 @@
-/* ===== 基本リセット ===== */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background-color: #f5f5f5;
-}
+/* =====================================================
+   ■ アプリレイアウト
+===================================================== */
 
-/* ===== コンテナ（中央寄せ） ===== */
+/* 中央寄せコンテナ */
 .container {
   max-width: 500px;
   margin: 0 auto;
   padding: 16px;
 }
 
-/* ===== 画面切替ボタン ===== */
+/* ヘッダ（Mode + Tabs） */
 .header {
   display: flex;
   gap: 6px;
@@ -24,7 +20,11 @@ body {
   flex: 1;
 }
 
-/* ===== ボタン ===== */
+
+/* =====================================================
+   ■ 共通ボタン
+===================================================== */
+
 button {
   padding: 10px;
   border: none;
@@ -39,7 +39,55 @@ button:hover {
   background-color: #3a9edb;
 }
 
-/* ===== 入力 ===== */
+
+/* =====================================================
+   ■ ModeSwitch / Tabs（状態付きボタン）
+===================================================== */
+
+.mode-button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+/* 非選択 */
+.mode-button-shopping,
+.mode-button-todo {
+  background: #777;
+}
+
+/* 選択中 */
+.mode-button-shopping.active {
+  background: #3498db;
+}
+
+.mode-button-todo.active {
+  background: #2ecc71;
+}
+
+
+/* =====================================================
+   ■ 操作ボタン
+===================================================== */
+
+.btn-edit {
+  background: #3498db;
+  color: #fff;
+  margin-left: 6px;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: #fff;
+  margin-left: 6px;
+}
+
+
+/* =====================================================
+   ■ 入力
+===================================================== */
+
 input {
   padding: 8px;
   border: 1px solid #ccc;
@@ -47,7 +95,11 @@ input {
   font-size: 14px;
 }
 
-/* ===== カード（1行） ===== */
+
+/* =====================================================
+   ■ カードUI
+===================================================== */
+
 .card {
   background: white;
   border-radius: 14px;
@@ -56,26 +108,28 @@ input {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* ===== 上段（チェック＋名前） ===== */
+
+/* 上段 */
 .row-top {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* ===== 下段（入力） ===== */
+/* 下段 */
 .row-bottom {
   display: flex;
   gap: 8px;
   margin-top: 6px;
 }
 
-/* ===== 商品名（強調） ===== */
+/* 名前 */
 .name {
   font-weight: bold;
   font-size: 15px;
 }
 
-/* ===== 補助テキスト ===== */
+/* 補助 */
 .sub {
   font-size: 12px;
+}
