@@ -80,10 +80,10 @@ function TodoMaster() {
       }
     ]);
 
-    // 入力フォームをリセット（UX向上）
     setCategory("");
     setName("");
     setRefDate("");
+    // 入力フォームをリセット（UX向上）
     setNote("");
 
     // 最新データを再取得
@@ -123,6 +123,42 @@ function TodoMaster() {
 
     // データ再読み込み
     loadItems();
+  };
+// ===============================
+// ■ 削除処理
+// ===============================
+  const deleteItem = async (id) => {
+
+    const ok = window.confirm("削除してよろしいですか？");
+    if (!ok) return;
+
+    try {
+
+      // ① 履歴削除（先に削除）
+      await supabase
+       .from("purchase_history")
+       .delete()
+        .eq("item_id", id);
+
+      // ② items削除（本体）
+      await supabase
+        .from("items")
+        .delete()
+        .eq("id", id);
+
+      // フィードバック
+      // （TodoMasterにはtoastないなら後で追加してもOK）
+      alert("削除しました");
+
+     // 一覧更新
+      loadItems();
+
+     // 編集解除
+      setEditingId(null);
+
+   } catch (e) {
+     alert("削除エラー");
+   }
   };
 
   // ===============================
@@ -185,32 +221,46 @@ function TodoMaster() {
 
             <div style={{ flex: 1, textAlign: "left" }}>
 
-              {editingId === item.id ? (
-                <>
-                  {/* ===== 編集モード ===== */}
+      {editingId === item.id ? (
+        <>
+          {/* ===== 編集モード ===== */}
 
-                  <input
-                    list="category-list-todo"
-                    value={editCategory}
-                    onChange={(e) => setEditCategory(e.target.value)}
-                  />
+          <input
+            list="category-list-todo"
+            value={editCategory}
+            onChange={(e) => setEditCategory(e.target.value)}
+          />
 
-                  <input
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                  />
+          <input
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
+          />
 
-                  <input
-                    type="number"
-                    value={editRefDate}
-                    onChange={(e) => setEditRefDate(e.target.value)}
-                  />
+          <input
+            type="number"
+            value={editRefDate}
+            onChange={(e) => setEditRefDate(e.target.value)}
+          />
 
-                  <button onClick={() => saveEdit(item)}>
-                    保存
-                  </button>
+          {/* 保 存 */}
+          <button onClick={() => saveEdit(item)}>
+            保存
+          </button>
 
-                </>
+          {/* ★追加：削除 */}
+          <button
+            className="btn-delete"
+            onClick={() => deleteItem(item.id)}
+          >
+            削除
+          </button>
+
+        {/* ★追加：キャンセル */}
+          <button onClick={() => setEditingId(null)}>
+            キャンセル
+          </button>
+
+        </>
               ) : (
                 <>
                   {/* ===== 表示モード ===== */}
