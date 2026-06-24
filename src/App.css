@@ -46,7 +46,7 @@ button:hover {
 
 .mode-button {
   flex: 1;
-  min-width: 160px;
+  min-width: 120px;
   padding: 8px;
   border-radius: 6px;
   color: #fff;
