@@ -3,6 +3,11 @@ import { supabase } from "./supabase";
 
 function Master() {
 
+  // ===============================
+  // ■ State定義
+  // ===============================
+
+
   // 商品一覧（type=1：買物のみ）
   const [items, setItems] = useState([]);
 
