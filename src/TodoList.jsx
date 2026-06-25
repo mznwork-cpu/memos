@@ -19,6 +19,9 @@ function TodoList() {
   // 表示切替フラグ（true：期限のみ / false：全件表示）
   const [showDueOnly, setShowDueOnly] = useState(true);
 
+  // ローディング状態
+  const [loading, setLoading] = useState(false);
+
   // ===============================
   // ■ 初期ロード
   // ===============================
@@ -65,6 +68,10 @@ function TodoList() {
   // ■ 実行処理
   // ===============================
   const executeAll = async () => {
+    // 二重押し防止
+    if (loading) return;     
+    // 開始      
+    setLoading(true);        
 
     try {
 
@@ -102,6 +109,9 @@ function TodoList() {
 
     } catch (e) {
       setToast("エラーが発生しました");
+    } finally {
+      // 終了
+      setLoading(false);
     }
 
     // トーストを一定時間で消す
@@ -113,6 +123,15 @@ function TodoList() {
   // ===============================
   return (
     <div>
+      {/* 処理中 */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-box">
+            <div className="spinner"></div>
+              処理中...
+          </div>
+        </div>
+      )}
 
       {/* トースト表示 */}
       {toast && (

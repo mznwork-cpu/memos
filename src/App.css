@@ -190,3 +190,50 @@ input {
   background: #e74c3c;           /* エラー用（赤） */
 }
 
+/* =====================================================
+   ■ ローディングモーダル（画面ブロック）
+===================================================== */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* 半透明で画面覆う */
+  background: rgba(0, 0, 0, 0.4);
+
+  /* 中央寄せ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2000; /* トーストより上 */
+}
+
+/* 中央メッセージ */
+.loading-box {
+  background: #fff;
+  padding: 16px 24px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+
+  border: 4px solid #ddd;        /* 薄い円 */
+  border-top: 4px solid #3498db; /* 色付き部分 */
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+}
+
+/* 回転アニメーション */
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
