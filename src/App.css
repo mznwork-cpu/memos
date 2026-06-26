@@ -31,14 +31,13 @@
 }
 
 /* ■ 上部操作エリア（stickyヘッダ） */
-
 .sub-header-fixed {
   /* スクロールしても上に張り付く */
   position: sticky;
   /* 上のheader分だけずらす */
   top: 80px;
   /* 背景がないと下のリストが透ける */
-  background: #8f4545;
+  background: #fff;
   /* 他の要素より前面に表示 */
   z-index: 900;
   /* 下のリストとの区切り */
@@ -59,6 +58,28 @@
   margin-bottom: 8px;
 }
 
+/* ヘッダ行の検索領域 */
+.header-search {
+  /* 横並び */
+  display: flex;
+  /* 要素間の余白 */
+  gap: 8px;
+  /* 行ごとの余白 */
+  margin-bottom: 8px;
+}
+
+/* ヘッダ内の行（実行・ボタンなど） */
+.header-execute {
+  /* 横並び */
+  display: flex;
+  /* 要素間の余白 */
+  gap: 8px;
+  /* 行ごとの余白 */
+  margin-bottom: 8px;
+  /* 右寄せ */
+  justify-content: flex-end;
+}
+
 
 /* =====================================================
    ■ メイン表示領域（リストエリア）
@@ -69,7 +90,6 @@
     将来スクロール制御や余白調整に使う
    } 
 */
-
 
 .header button {
   flex: 1;
@@ -124,17 +144,24 @@ button:hover {
 /* =====================================================
    ■ 操作ボタン
 ===================================================== */
-
+/* 編集ボタン */
 .btn-edit {
   background: #3498db;
   color: #fff;
   margin-left: 6px;
 }
-
+/* 削除ボタン */
 .btn-delete {
   background: #e74c3c;
   color: #fff;
   margin-left: 6px;
+}
+/* 実行ボタン */
+.btn-execute {
+  background: #f39c12;
+  color: #fff;
+  margin-left: 6px;
+  min-width: 120px;
 }
 /* =====================================================
    ■ 画面タイトル（h1）

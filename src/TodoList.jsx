@@ -140,15 +140,30 @@ function TodoList() {
         </div>
       )}
 
-      <h1 className={"page-title todo"}>Todo</h1>
+      {/* 画面本体 */}
+      {/* 上部固定 */}
+      <div className="sub-header-fixed">
+        {/* タイトル */}
+        {/* <h1 className={"page-title todo"}>Todo</h1> */}
 
-      {/* 表示切替ボタン */}
-      <button onClick={() => setShowDueOnly(v => !v)}>
-        {showDueOnly
-          ? "期限のみ"
-          : "全件表示"}
-      </button>
+        {/* 検索領域 */}       
+        <div className="header-search">
+          <button onClick={() => setShowDueOnly(v => !v)}>
+           {showDueOnly
+             ? "期限のみ"
+             : "全件表示"}
+         </button>
+        </div>
 
+        {/* 検索領域 */}       
+        <div className="header-execute">
+          {/* 実行ボタン */}
+          <button onClick={executeAll} className="btn-execute">
+            実行
+          </button>
+        </div>
+      </div>
+       
       {/* 一覧表示 */}
       {displayItems.map(item => (
         <div className="card" key={item.id}>
@@ -196,15 +211,8 @@ function TodoList() {
               }))
             }
           />
-
         </div>
       ))}
-
-      {/* 実行ボタン */}
-      <button onClick={executeAll}>
-        実行
-      </button>
-
     </div>
   );
 }
