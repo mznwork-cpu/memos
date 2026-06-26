@@ -38,43 +38,22 @@ function App() {
     <div className="container">
 
       {/* ===== ヘッダ（常に表示するUI） ===== */}
-      {/* 
-        ModeSwitch：機能単位の切替（買物 / Todo）
-        ScreenTabs：画面単位の切替（マスタ / リスト / 履歴）
-
-        → この2つは「画面全体に影響するため最上位に配置」
-        → stickyで固定する想定
-      */}
-      <div className="header-fixed">
-
+      <div className="header-fixed"> 
+        {/* モード切替ボタン */}
         <ModeSwitch
           mode={mode}
           setMode={setMode}
         />
-
+        {/* 画面切替タブ */}
         <ScreenTabs
           screen={screen}
           setScreen={setScreen}
           mode={mode}
         />
-
       </div>
 
       {/* ===== メイン表示領域 ===== */}
-      {/* 
-        mode と screen の組み合わせで表示するコンポーネントを切替
-
-        例：
-        mode="shopping" + screen="list"
-        → 買物リスト表示
-
-        mode="todo" + screen="master"
-        → Todoマスタ表示
-      */}
-
-      {/* ===============================
-          ■ 買物モード
-      =============================== */}
+      {/* ■ 買物モード */}
       {mode === "shopping" && (
         <>
           {/* 商品リスト */}
@@ -88,9 +67,7 @@ function App() {
         </>
       )}
 
-      {/* ===============================
-          ■ Todoモード
-      =============================== */}
+      {/* ■ Todoモード */}
       {mode === "todo" && (
         <>
           {/* やることリスト */}
@@ -109,4 +86,3 @@ function App() {
 }
 
 export default App;
-``
