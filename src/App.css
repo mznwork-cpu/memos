@@ -1,186 +1,161 @@
 /* =====================================================
-   ■ アプリレイアウト
+   ■ レイアウト（画面構造）
 ===================================================== */
+:root {
+  /* 基本背景色 */
+  --base-background: #e2f4f5;
+}
 
-/* 中央寄せコンテナ */
+/* 中央寄せコンテナ
+   ・アプリ全体の横幅を制御
+   ・スマホ中心レイアウトにする */
 .container {
-  max-width: 500px;
+  /* min-width: 360px; */
+  /* max-width: 400px; */
+  width: 360px;
   margin: 0 auto;
   padding: 16px;
+  background: var(--base-background);
 }
 
-/* ヘッダ（Mode + Tabs） */
-.header {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-/* ■ 上部固定エリア（stickyヘッダ） */
+/* 共通ヘッダ（ModeSwitch + ScreenTabs）
+   ・全画面共通の操作エリア
+   ・スクロールしても上部に固定 */
 .header-fixed {
-  /* スクロールしても上に張り付く */
   position: sticky;
-  /* 画面上部に固定 */
   top: 0;
-  /* 背景がないと下のリストが透ける */
-  background: #fff;
-  /* 他の要素より前面に表示 */
-  z-index: 1000;
-  /* 下のリストとの区切り */
-  padding-bottom: 10px;
+  gap: 0px;
+  margin: 0;
+  background: var(--base-background);    /* 下の要素が透けないように */
+  z-index: 1000;       /* 最前面に配置 */
+  padding-bottom: 2px;
 }
 
-/* ■ 上部操作エリア（stickyヘッダ） */
+/* サブヘッダ（タイトル + 検索 + 実行ボタン）
+   ・各画面固有の操作エリア
+   ・共通ヘッダの下に固定される */
 .sub-header-fixed {
-  /* スクロールしても上に張り付く */
   position: sticky;
-  /* 上のheader分だけずらす */
-  top: 80px;
-  /* 背景がないと下のリストが透ける */
-  background: #fff;
-  /* 他の要素より前面に表示 */
+  top: 100px;           /* 共通ヘッダ分だけ下げる */
+  background: var(--base-background);    /* 下の要素が透けないように */
   z-index: 900;
-  /* 下のリストとの区切り */
   padding-bottom: 10px;
 }
 
 
 /* =====================================================
-   ■ ヘッダ内の行（検索・ボタンなど）
+   ■ ヘッダ内レイアウト
 ===================================================== */
 
-.header-row {
-  /* 横並び（入力 + ボタンなど対応可能） */
-  display: flex;
-  /* 要素間の余白 */
-  gap: 8px;
-  /* 行ごとの余白 */
-  margin-bottom: 8px;
-}
-
-/* ヘッダ行の検索領域 */
+/* 検索専用エリア
+   ・入力欄を横いっぱいに使う前提
+   ・今後ボタン追加などの拡張にも対応可能 */
 .header-search {
-  /* 横並び */
   display: flex;
-  /* 要素間の余白 */
   gap: 8px;
-  /* 行ごとの余白 */
   margin-bottom: 8px;
 }
 
-/* ヘッダ内の行（実行・ボタンなど） */
+/* 実行ボタンエリア
+   ・重要操作なので右寄せで配置
+   ・目線的に分かりやすくする */
 .header-execute {
-  /* 横並び */
   display: flex;
-  /* 要素間の余白 */
   gap: 8px;
-  /* 行ごとの余白 */
   margin-bottom: 8px;
-  /* 右寄せ */
   justify-content: flex-end;
 }
 
 
 /* =====================================================
-   ■ メイン表示領域（リストエリア）
+   ■ ボタン
 ===================================================== */
-/*
-  .body-area {  
-    今はスタイルなしでもOK
-    将来スクロール制御や余白調整に使う
-   } 
-*/
 
-.header button {
-  flex: 1;
-}
-
-
-/* =====================================================
-   ■ 共通ボタン
-===================================================== */
- /* ベース */
+/* 共通ボタン
+   ・アプリ全体で統一された基本スタイル */
 button {
   padding: 10px;
   border: none;
   border-radius: 10px;
   background-color: #4cafef;
-  color: white;
+  color: #fff;
   font-size: 14px;
   cursor: pointer;
 }
 
-/* ホバー時 */
+/* hover時の視覚フィードバック
+   ・操作可能であることを示す */
 button:hover {
   background-color: #ecc879;
 }
 
-/* モード切替ボタン */  
+
+/* モード切替ボタン（買物 / Todo）
+   ・状態によって色が変化 */
 .mode-button {
   flex: 1;
-  min-width: 120px;
-  padding: 8px;
-  border-radius: 6px;
+  border-radius: 0px;
+  border:#777  1px solid;
+  min-width: 110px;
   color: #fff;
 }
 
-/* 非選択 */
+/* 非選択状態（共通） */
 .mode-button-shopping,
 .mode-button-todo {
   background: #777;
 }
 
-/* 買い物選択中 */
+/* 選択中（買物） */
 .mode-button-shopping.active {
   background: #3498db;
 }
 
-/* Todo選択中 */
+/* 選択中（Todo） */
 .mode-button-todo.active {
   background: #2ecc71;
 }
 
 
-/* =====================================================
-   ■ 操作ボタン
-===================================================== */
-/* 編集ボタン */
+/* 操作ボタン（役割別）
+   ・色で意味を伝える設計 */
 .btn-edit {
-  background: #3498db;
-  color: #fff;
+  background: #3498db;   /* 編集＝青（操作） */
   margin-left: 6px;
 }
-/* 削除ボタン */
+
 .btn-delete {
-  background: #e74c3c;
-  color: #fff;
+  background: #e74c3c;   /* 削除＝赤（危険） */
   margin-left: 6px;
 }
-/* 実行ボタン */
+
 .btn-execute {
-  background: #f39c12;
-  color: #fff;
+  background: #fa9e0a;   /* 実行＝オレンジ（注意） */
   margin-left: 6px;
   min-width: 120px;
 }
+
+
 /* =====================================================
-   ■ 画面タイトル（h1）
+   ■ テキスト
 ===================================================== */
 
+/* 画面タイトル
+   ・各画面の見出し
+   ・現在のモードに応じて色変化 */
 .page-title {
-  font-size: 24px;              /* 大きすぎない（今のUIに合わせる） */
-  font-weight: 600;             /* 少し強調 */
-  text-align: left;             /* 左寄せ（アプリっぽく） */
-
+  font-size: 24px;
+  font-weight: 600;
+  text-align: left;
   margin: 16px 0 12px;
-
   color: #333;
 
-  /* 下にラインを入れる */
+  /* セクション区切りライン */
   padding-bottom: 6px;
   border-bottom: 2px solid #eee;
 }
 
+/* モードごとの色分け */
 .page-title.shopping {
   border-bottom: 2px solid #79b1d6;
 }
@@ -189,11 +164,24 @@ button:hover {
   border-bottom: 2px solid #8fcca8;
 }
 
+/* メイン表示テキスト */
+.name {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* 補助テキスト（詳細・説明） */
+.sub {
+  font-size: 12px;
+}
+
 
 /* =====================================================
-   ■ 入力
+   ■ 入力フィールド
 ===================================================== */
 
+/* テキスト入力
+   ・ボタンと統一されたサイズ感 */
 input {
   padding: 8px;
   border: 1px solid #ccc;
@@ -203,9 +191,11 @@ input {
 
 
 /* =====================================================
-   ■ カードUI
+   ■ カードUI（一覧アイテム）
 ===================================================== */
 
+/* 1レコードのまとまり
+   ・背景と影でカードとして区別 */
 .card {
   background: rgb(243, 242, 242);
   border-radius: 14px;
@@ -214,97 +204,88 @@ input {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-
-/* 上段 */
+/* 上段（チェック + 名前） */
 .row-top {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* 下段 */
+/* 下段（入力・追加情報） */
 .row-bottom {
   display: flex;
   gap: 8px;
   margin-top: 6px;
 }
 
-/* 名前 */
-.name {
-  font-weight: bold;
-  font-size: 15px;
-}
-
-/* 補助 */
-.sub {
-  font-size: 12px;
-}
 
 /* =====================================================
-   ■ トースト（通知表示）
+   ■ トースト（通知）
 ===================================================== */
 
-/* ベース */
+/* 共通 */
 .toast {
-  position: fixed;                /* 画面固定表示 */
+  position: fixed;
   top: 20px;
-
   left: 50%;
-  transform: translateX(-50%);   /* 横中央寄せ */
-
+  transform: translateX(-50%);
   padding: 10px 16px;
   border-radius: 20px;
-
   color: #fff;
-
-  z-index: 1000;                 /* 他要素より前面 */
+  z-index: 1000;
 }
 
-/* 種類ごとの色 */
+/* 成功 */
 .toast-success {
-  background: #f39c12;           /* 確定通知（オレンジ） */
+  background: #f39c12;
 }
 
+/* エラー */
 .toast-error {
-  background: #e74c3c;           /* エラー用（赤） */
+  background: #e74c3c;
 }
+
 
 /* =====================================================
-   ■ ローディングモーダル（画面ブロック）
+   ■ ローディング（画面ブロック）
 ===================================================== */
 
+/* 背景オーバーレイ
+   ・ユーザー操作を完全ブロック */
 .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background: rgba(0,0,0,0.4);
 
-  /* 半透明で画面覆う */
-  background: rgba(0, 0, 0, 0.4);
-
-  /* 中央寄せ */
   display: flex;
   align-items: center;
   justify-content: center;
 
-  z-index: 2000; /* トーストより上 */
+  z-index: 2000;
 }
 
-/* 中央メッセージ */
+/* 中央メッセージボックス
+   ・スピナーとメッセージ表示 */
 .loading-box {
   background: #fff;
   padding: 16px 24px;
   border-radius: 10px;
   font-weight: bold;
+  text-align: center;
 }
 
+/* スピナー（くるくる）
+   ・処理中であることを視覚的に表現 */
 .spinner {
   width: 30px;
   height: 30px;
+  margin: 0 auto 10px;
 
-  border: 4px solid #ddd;        /* 薄い円 */
-  border-top: 4px solid #3498db; /* 色付き部分 */
+  border: 4px solid #ddd;
+  border-top: 4px solid #3498db;
 
   border-radius: 50%;
 
