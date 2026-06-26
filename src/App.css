@@ -64,6 +64,9 @@
   gap: 8px;
   margin-bottom: 8px;
   justify-content: flex-end;
+  /* セクション区切りライン */
+  border-bottom: 1px solid #0d5357;;
+
 }
 
 
@@ -132,6 +135,7 @@ button:hover {
 .btn-execute {
   background: #fa9e0a;   /* 実行＝オレンジ（注意） */
   margin-left: 6px;
+  margin-bottom: 2px;
   min-width: 120px;
 }
 
