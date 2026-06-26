@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { supabase } from "./supabase";
+// import { supabase } from "./services/supabase";
+import { executeTodo } from "./services/Service";
+import { fetchTodoList } from "./services/Service";
 
 function TodoList() {
 
@@ -34,14 +36,16 @@ function TodoList() {
   // ===============================
   const loadItems = async () => {
 
-    // ViewからTodo一覧を取得
-    const { data } = await supabase
-      .from("v_todo_list")
-      .select("*")
-      .order("category")
-      .order("name");
+    // // ViewからTodo一覧を取得
+    // const { data } = await supabase
+    //   .from("v_todo_list")
+    //   .select("*")
+    //   .order("category")
+    //   .order("name");
+    // const list = data || [];
 
-    const list = data || [];
+    const list = await fetchTodoList();
+
     setItems(list);
 
     // チェック状態とメモ入力用の初期値を作成
@@ -78,28 +82,33 @@ function TodoList() {
       // 表示中のリストからチェックされたものだけ処理
       for (const item of displayItems) {
 
+        // チェック状態を確認
         const data = dataMap[item.id];
-
+        
+        // チェックされていない場合はスキップ
         if (!data?._checked) continue;
 
+        // メモ入力値を取得
         const note = data.note || "";
 
-        // 履歴登録（これにより最終日が更新される）
-        await supabase
-          .from("purchase_history")
-          .insert([
-            {
-              item_id: item.id,
-              note,
-              purchased_date: new Date().toISOString().slice(0, 10)
-            }
-          ]);
+        // 実行処理
+        await executeTodo(item.id, note);
+        // // 履歴登録（これにより最終日が更新される）
+        // await supabase
+        //   .from("purchase_history")
+        //   .insert([
+        //     {
+        //       item_id: item.id,
+        //       note,
+        //       purchased_date: new Date().toISOString().slice(0, 10)
+        //     }
+        //   ]);
 
-        // チェック状態をOFFにする
-        await supabase
-          .from("items")
-          .update({ checked: false })
-          .eq("id", item.id);
+        // // チェック状態をOFFにする
+        // await supabase
+        //   .from("items")
+        //   .update({ checked: false })
+        //   .eq("id", item.id);
       }
 
       setToast("実行しました");
