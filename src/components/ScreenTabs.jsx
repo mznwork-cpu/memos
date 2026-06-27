@@ -18,7 +18,7 @@ function ScreenTabs({ screen, setScreen, mode }) {
       : "mode-button-todo";
 
   return (
-    <div style={{ display: "flex", gap: 0, marginBottom: 10 }}>
+    <div style={{ display: "flex", gap: 0, marginBottom: 4 }}>
 
       {/* ===== マスタ ===== */}
       <button
