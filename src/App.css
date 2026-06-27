@@ -196,6 +196,14 @@ input {
   font-size: 14px;
 }
 
+/* 価格入力 */
+input.price {
+  text-align: right;
+}
+input.price::placeholder {
+  text-align: left;
+}
+
 /* 拡大チェックボックス */
 .checkbox-large {
   transform: scale(1.8);

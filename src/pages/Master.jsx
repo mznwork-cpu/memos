@@ -152,6 +152,7 @@ function Master() {
 
         {/* 単価 */}
         <input
+          className="price"
           type="number"
           placeholder="単価"
           value={price}
@@ -178,6 +179,7 @@ function Master() {
             {/* チェック：買物対象 */}
             <input
               type="checkbox"
+              className="checkbox-large"
               checked={item.checked}
               onChange={() => toggleCheck(item)}
             />

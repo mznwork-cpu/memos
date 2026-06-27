@@ -41,16 +41,6 @@ function Shopping() {
     const list = await fetchShoppingList();
     setItems(list);
 
-      //   const { data } = await supabase
-      // .from("items")
-      // .select("*")
-      // .eq("type", 1)          // 買物データのみ
-      // .eq("checked", true)    // 買物対象のみ
-      // .order("category")
-      // .order("name");
-      // setItems(data || []);
-
-
     // 各商品の初期入力状態を作成
     // ・数量は1
     // ・価格は前回価格を初期値
@@ -226,6 +216,7 @@ function Shopping() {
               <input
                 className="price"
                 type="number"
+                placeholder="価格"
                 value={dataMap[item.id]?.price || ""}
                 onChange={(e) =>
                   setDataMap(prev => ({
