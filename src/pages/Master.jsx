@@ -1,6 +1,6 @@
 // TODO: executeAllにloading制御追加
 import { useState, useEffect } from "react";
-import { supabase } from "./services/supabase";
+import { supabase } from "../services/supabase";
 
 function Master() {
 

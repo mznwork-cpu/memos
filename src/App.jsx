@@ -6,14 +6,14 @@ import ModeSwitch from "./components/ModeSwitch";
 import ScreenTabs from "./components/ScreenTabs";
 
 // 買物系
-import Master from "./Master";
-import Shopping from "./Shopping";
-import History from "./History";
+import Master from "./pages/Master";
+import Shopping from "./pages/Shopping";
+import History from "./pages/History";
 
 // Todo系
-import TodoMaster from "./TodoMaster";
-import TodoList from "./TodoList";
-import TodoHistory from "./TodoHistory";
+import TodoMaster from "./pages/TodoMaster";
+import TodoList from "./pages/TodoList";
+import TodoHistory from "./pages/TodoHistory";
 
 function App() {
 
