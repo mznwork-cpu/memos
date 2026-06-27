@@ -13,7 +13,7 @@ function ModeSwitch({ mode, setMode }) {
   return (
     // 横並びレイアウト
     // ※ 見た目は今は軽くstyleで維持（ここは後でCSS化してもOK）
-    <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+    <div style={{ display: "flex", gap: 0, marginBottom: 0 }}>
 
       {/* ===== 買物モード ===== */}
       <button

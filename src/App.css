@@ -109,7 +109,7 @@ button:hover {
 /* 非選択状態（共通） */
 .mode-button-shopping,
 .mode-button-todo {
-  background: #777;
+  background: #999;
 }
 
 /* 選択中（買物） */
