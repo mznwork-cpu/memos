@@ -1,5 +1,7 @@
 // TODO: executeAllにloading制御追加
 import { useState, useEffect } from "react";
+import { fetchShoppingList } from "../services/Service";
+
 import { supabase } from "../services/supabase";
 
 function Shopping() {
@@ -36,21 +38,15 @@ function Shopping() {
   const loadItems = async () => {
 
     // データ取得
-    const { data } = await supabase
-      .from("items")
-      .select("*")
-      .eq("type", 1)          // 買物データのみ
-      .eq("checked", true)    // 買物対象のみ
-      .order("category")
-      .order("name");
-      setItems(data || []);
+    const { list } = await fetchShoppingList();
+    setItems(list);
 
     // 各商品の初期入力状態を作成
     // ・数量は1
     // ・価格は前回価格を初期値
     // ・入力用のチェックはoff
     const initial = {};
-    (data || []).forEach(item => {
+    (list || []).forEach(item => {
       initial[item.id] = {
         quantity: 1,
         price: item.last_price || "",

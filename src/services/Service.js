@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 
+// ========== 更新処理 ==========
 // === Todo実行処理 ===
 export const executeTodo = async (itemId, note) => {
     // 履歴登録
@@ -19,6 +20,19 @@ export const executeTodo = async (itemId, note) => {
     .eq("id", itemId);
 };
 
+// ========== 取得処理 ==========
+// === 買物対象一覧取得 ===
+export const fetchShoppingList = async () => {
+  const { data } = await supabase
+    .from("items")
+    .select("*")
+    // .eq("type", 1)          // 買物データのみ
+    // .eq("checked", true)    // 買物対象のみ
+    .order("category")
+    .order("name");
+  return data || [];
+};
+  
 // === Todo一覧取得 ===
 export const fetchTodoList = async () => {
 
@@ -27,6 +41,5 @@ export const fetchTodoList = async () => {
     .select("*")
     .order("category")
     .order("name");
-
   return data || [];
 };
