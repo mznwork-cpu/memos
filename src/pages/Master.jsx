@@ -131,6 +131,7 @@ function Master() {
         {/* カテゴリ（入力＋候補選択） */}
         <input
           list="category-list"
+          className="category"
           placeholder="分類"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
