@@ -13,11 +13,6 @@ export const executeTodo = async (itemId, note) => {
         purchased_date: new Date().toISOString().slice(0, 10)
       }
     ]);
-    // アイテムのチェック状態をOFFにする
-  await supabase
-    .from("items")
-    .update({ checked: false })
-    .eq("id", itemId);
 };
 
 // ========== 取得処理 ==========
