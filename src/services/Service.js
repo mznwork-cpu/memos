@@ -21,8 +21,8 @@ export const fetchShoppingList = async () => {
   const { data } = await supabase
     .from("items")
     .select("*")
-    // .eq("type", 1)          // 買物データのみ
-    // .eq("checked", true)    // 買物対象のみ
+    .eq("type", 1)          // 買物データのみ
+    .eq("checked", true)    // 買物対象のみ
     .order("category")
     .order("name");
   return data || [];
