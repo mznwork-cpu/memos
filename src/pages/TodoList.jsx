@@ -129,10 +129,10 @@ function TodoList() {
       <div className="sub-header-fixed">
         {/* 検索領域 */}       
         <div className="header-search">
-          <button onClick={() => setShowDueOnly(v => !v)}>
-           {showDueOnly
-             ? "期限のみ"
-             : "全件表示"}
+          <button onClick={() => setShowDueOnly(v => !v)} className="btn-seach">
+            {showDueOnly
+              ? "期限のみ"
+              : "全件表示"}
          </button>
         </div>
 

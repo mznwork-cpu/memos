@@ -58,6 +58,8 @@
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
+  /* セクション区切りライン */
+  border-bottom: 2px solid #17949b;;
 }
 
 /* 実行ボタンエリア
@@ -135,10 +137,20 @@ button:hover {
   margin-left: 6px;
 }
 
+.btn-seach {
+  background: #05b11c;   /* 実行＝オレンジ（注意） */
+  margin-left: 6px;
+  margin-bottom: 2px;
+  height: 40px;
+  min-width: 100px;
+}
+
+
 .btn-execute {
   background: #fa9e0a;   /* 実行＝オレンジ（注意） */
   margin-left: 6px;
   margin-bottom: 2px;
+  height: 40px;
   min-width: 120px;
 }
 
