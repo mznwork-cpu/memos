@@ -13,6 +13,9 @@ function Master() {
   // 商品一覧（type=1：買物のみ）
   const [items, setItems] = useState([]);
 
+  // 分類の検索値
+  const [seachCategory, setSachCategory] = useState("");
+  
   // 新規登録フォームの入力値
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
@@ -49,6 +52,9 @@ function Master() {
     const uniqueCategories = getUniqueCategories(data)
     setCategories(uniqueCategories);
   };
+
+  // 表示切替★これまだ未使用
+  const [seach, setSeach] = useState({});
 
   // 商品追加処理
   const addItem = async () => {
@@ -115,11 +121,29 @@ function Master() {
     loadItems();
   };
 
+  // ===============================
+  // ■ UI画面
+  // ===============================
   return (
     <div>
+      {/* <h1 className={"page-title shopping"}>商品リスト</h1> */}
+      {/* 画面本体 */}
+      {/* 上部固定 */}
+      <div className="sub-header-fixed">
+        {/* 検索領域 */}
+        <div className="header-search">
+          {/* 検索用カテゴリ */}
+          <button onClick={() => setSeach(v => !v)} className="btn-seach">
+            検索
+          </button>
+          <input
+            list="category-list"
+            clanssName="category"
 
-      <h1 className={"page-title shopping"}>商品リスト</h1>
-
+          />
+          まだできない
+        </div>
+      </div>
       {/* ===== 新規登録フォーム ===== */}
       <div className="card">
 

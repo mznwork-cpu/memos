@@ -127,7 +127,7 @@ function TodoList() {
       {/* 画面本体 */}
       {/* 上部固定 */}
       <div className="sub-header-fixed">
-        {/* 検索領域 */}       
+        {/* 検索領域 */}
         <div className="header-search">
           <button onClick={() => setShowDueOnly(v => !v)} className="btn-seach">
             {showDueOnly

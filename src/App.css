@@ -89,6 +89,7 @@ button {
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+  height: 40px;
 }
 
 /* hover時の視覚フィードバック
@@ -138,19 +139,16 @@ button:hover {
 }
 
 .btn-seach {
-  background: #05b11c;   /* 実行＝オレンジ（注意） */
+  background: #75b47d;   /* 検索＝緑 */
   margin-left: 6px;
   margin-bottom: 2px;
-  height: 40px;
-  min-width: 100px;
+  min-width: 10px;
 }
-
 
 .btn-execute {
   background: #fa9e0a;   /* 実行＝オレンジ（注意） */
   margin-left: 6px;
   margin-bottom: 2px;
-  height: 40px;
   min-width: 120px;
 }
 
@@ -206,6 +204,8 @@ input {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
+  height: 20x;
+  margin: 2px;
 }
 
 /* 分類 */
