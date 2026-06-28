@@ -142,7 +142,6 @@ button:hover {
   background: #75b47d;   /* 検索＝緑 */
   margin-left: 6px;
   margin-bottom: 2px;
-  min-width: 10px;
 }
 
 .btn-execute {
