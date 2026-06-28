@@ -211,6 +211,7 @@ input {
 input.category {
   text-align: left;
   width: 100px;
+  background-color: #e3f0e8;
 }
 
 /* 価格入力 */

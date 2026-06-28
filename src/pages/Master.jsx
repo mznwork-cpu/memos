@@ -138,7 +138,7 @@ function Master() {
           </button>
           <input
             list="category-list"
-            clanssName="category"
+            className="category"
 
           />
           まだできない
