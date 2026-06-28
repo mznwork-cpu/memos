@@ -16,6 +16,11 @@ export const executeTodo = async (itemId, note) => {
 };
 
 // ========== 取得処理 ==========
+// === マスタ一覧取得 ===
+export const fetchMasterList = async () => {
+
+}
+
 // === 買物対象一覧取得 ===
 export const fetchShoppingList = async () => {
   const { data } = await supabase
@@ -30,7 +35,6 @@ export const fetchShoppingList = async () => {
   
 // === Todo一覧取得 ===
 export const fetchTodoList = async () => {
-
   const { data } = await supabase
     .from("v_todo_list")
     .select("*")

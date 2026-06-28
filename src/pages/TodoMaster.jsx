@@ -1,6 +1,7 @@
 // TODO: executeAllにloading制御追加
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabase";
+import { getUniqueCategories } from "../utils/utils";
 
 function TodoMaster() {
 
@@ -52,14 +53,7 @@ function TodoMaster() {
 
     // カテゴリ候補を生成（重複排除）
     // → datalistに表示して入力補助する
-    const uniqueCategories = [
-      ...new Set(
-        (data || [])
-          .map(i => i.category)
-          .filter(Boolean)   // null/空を除外
-      )
-    ];
-
+    const uniqueCategories = getUniqueCategories(data)
     setCategories(uniqueCategories);
   };
 
@@ -176,6 +170,7 @@ function TodoMaster() {
         {/* カテゴリ入力（datalistで候補表示） */}
         <input
           list="category-list-todo"
+          className="category"
           placeholder="分類"
           value={category}
           onChange={(e) => setCategory(e.target.value)}

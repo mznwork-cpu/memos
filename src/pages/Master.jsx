@@ -1,6 +1,7 @@
 // TODO: executeAllにloading制御追加
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabase";
+import { getUniqueCategories } from "../utils/utils";
 
 function Master() {
 
@@ -45,13 +46,7 @@ function Master() {
 
     // カテゴリ候補を生成（重複除去）
     // 入力補助（コンボボックス）用
-    const uniqueCategories = [
-      ...new Set((data || [])
-        .map(i => i.category)
-        .filter(Boolean)
-      )
-    ];
-
+    const uniqueCategories = getUniqueCategories(data)
     setCategories(uniqueCategories);
   };
 

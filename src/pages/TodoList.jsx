@@ -170,7 +170,7 @@ function TodoList() {
 
               {/* タスク表示 */}
               <div className="name">
-               {item.category} / {item.name}
+                {item.category} / {item.name}
               </div>
 
             </div>
