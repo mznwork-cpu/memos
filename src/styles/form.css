@@ -1,0 +1,33 @@
+/* テキスト入力
+   ・ボタンと統一されたサイズ感 */
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  height: 20x;
+  margin: 2px;
+}
+
+/* 分類 */
+input.category {
+  text-align: left;
+  width: 100px;
+  background-color: #e3f0e8;
+}
+
+/* 価格入力 */
+input.price {
+  text-align: right;
+  width: 100px;
+}
+input.price::placeholder {
+  text-align: left;
+}
+
+/* 拡大チェックボックス */
+.checkbox-large {
+  transform: scale(1.8);
+  transform-origin: left center; /* 左基準に拡大 */
+}
+

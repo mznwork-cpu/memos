@@ -1,5 +1,14 @@
 import { useState } from "react";
-import "./App.css";
+
+// CSSのimport
+import "./styles/layout.css";
+import "./styles/content.css";
+import "./styles/button.css";
+import "./styles/form.css";
+import "./styles/card.css";
+import "./styles/text.css";
+import "./styles/toast.css";
+import "./styles/loading.css";
 
 // 共通UIコンポーネント
 import ModeSwitch from "./components/ModeSwitch";

@@ -1,0 +1,72 @@
+/* 共通ボタン
+   ・アプリ全体で統一された基本スタイル */
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #4cafef;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  height: 40px;
+}
+
+/* hover時の視覚フィードバック
+   ・操作可能であることを示す */
+button:hover {
+  background-color: #ecc879;
+}
+
+
+/* モード切替ボタン（買物 / Todo）
+   ・状態によって色が変化 */
+.mode-button {
+  flex: 1;
+  border-radius: 0px;
+  border:#777  1px solid;
+  min-width: 110px;
+  color: #fff;
+}
+
+/* 非選択状態（共通） */
+.mode-button-shopping,
+.mode-button-todo {
+  background: #999;
+}
+
+/* 選択中（買物） */
+.mode-button-shopping.active {
+  background: #3498db;
+}
+
+/* 選択中（Todo） */
+.mode-button-todo.active {
+  background: #2ecc71;
+}
+
+
+/* 操作ボタン（役割別）
+   ・色で意味を伝える設計 */
+.btn-edit {
+  background: #3498db;   /* 編集＝青（操作） */
+  margin-left: 6px;
+}
+
+.btn-delete {
+  background: #e74c3c;   /* 削除＝赤（危険） */
+  margin-left: 6px;
+}
+
+.btn-seach {
+  background: #75b47d;   /* 検索＝緑 */
+  margin-left: 6px;
+  margin-bottom: 2px;
+}
+
+.btn-execute {
+  background: #fa9e0a;   /* 実行＝オレンジ（注意） */
+  margin-left: 6px;
+  margin-bottom: 2px;
+  min-width: 120px;
+}
+

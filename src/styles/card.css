@@ -1,0 +1,24 @@
+/* 1レコードのまとまり
+   ・背景と影でカードとして区別 */
+.card {
+  background: rgb(250, 250, 250);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 上段（チェック + 名前） */
+.row-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 下段（入力・追加情報） */
+.row-bottom {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+

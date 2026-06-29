@@ -1,0 +1,17 @@
+/*  */
+:root {
+  /* 基本背景色 */
+  --base-background: #d5f0f1;
+}
+
+/* 中央寄せコンテナ
+   ・アプリ全体の横幅を制御
+   ・スマホ中心レイアウトにする */
+.container {
+  /* min-width: 360px; */
+  /* max-width: 400px; */
+  width: 360px;
+  margin: 0 auto;
+  padding: 16px;
+  background: var(--base-background);
+}

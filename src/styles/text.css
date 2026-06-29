@@ -1,0 +1,10 @@
+/* メイン表示テキスト */
+.name {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* 補助テキスト（詳細・説明） */
+.sub {
+  font-size: 12px;
+}

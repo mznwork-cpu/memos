@@ -1,0 +1,50 @@
+/* 共通ヘッダ（ModeSwitch + ScreenTabs）
+   ・全画面共通の操作エリア
+   ・スクロールしても上部に固定 */
+.header-fixed {
+  position: sticky;
+  top: 0;
+  gap: 0px;
+  margin: 0;
+  background: var(--base-background);    /* 下の要素が透けないように */
+  z-index: 1000;       /* 最前面に配置 */
+  padding-bottom: 2px;
+}
+
+/* サブヘッダ（タイトル + 検索 + 実行ボタン）
+   ・各画面固有の操作エリア
+   ・共通ヘッダの下に固定される */
+.sub-header-fixed {
+  position: sticky;
+  top: 90px;           /* 共通ヘッダ分だけ下げる */
+  background: var(--base-background);    /* 下の要素が透けないように */
+  z-index: 900;
+  padding-bottom: 10px;
+}
+/* メイン表示エリア */
+.main-content {
+  background: var(--base-background);
+}
+
+/* 検索専用エリア
+   ・入力欄を横いっぱいに使う前提
+   ・今後ボタン追加などの拡張にも対応可能 */
+.header-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  /* セクション区切りライン */
+  border-bottom: 2px solid #17949b;;
+}
+
+/* 実行ボタンエリア
+   ・重要操作なので右寄せで配置
+   ・目線的に分かりやすくする */
+.header-execute {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  justify-content: flex-end;
+  /* セクション区切りライン */
+  border-bottom: 2px solid #17949b;;
+}
