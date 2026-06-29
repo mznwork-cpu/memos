@@ -9,7 +9,6 @@ function Master() {
   // ■ State定義
   // ===============================
 
-
   // 商品一覧（type=1：買物のみ）
   const [items, setItems] = useState([]);
 
@@ -165,6 +164,7 @@ function Master() {
 
         {/* 商品名 */}
         <input
+          className="itemname"
           placeholder="商品名"
           value={name}
           onChange={(e) => setName(e.target.value)}

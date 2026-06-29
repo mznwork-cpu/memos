@@ -9,17 +9,26 @@ input {
   margin: 2px;
 }
 
+/* 名称 */
+input.itemname {
+  text-align: left;
+  width: 180px;
+  background-color:var(--test-input);
+
+}
+
 /* 分類 */
 input.category {
   text-align: left;
   width: 100px;
-  background-color: #e3f0e8;
+  background-color:var(--test-input);
 }
 
 /* 価格入力 */
 input.price {
   text-align: right;
   width: 100px;
+  background-color:var(--test-input);
 }
 input.price::placeholder {
   text-align: left;
