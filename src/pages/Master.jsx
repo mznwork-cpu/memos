@@ -13,7 +13,8 @@ function Master() {
   const [items, setItems] = useState([]);
 
   // 分類の検索値
-  const [seachCategory, setSachCategory] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
+
   
   // 新規登録フォームの入力値
   const [category, setCategory] = useState("");
@@ -52,8 +53,10 @@ function Master() {
     setCategories(uniqueCategories);
   };
 
-  // 表示切替★これまだ未使用
-  const [seach, setSeach] = useState({});
+  // 分類絞込み表示
+  const displayItems = searchCategory
+    ? items.filter(i => i.category === searchCategory)
+    : items;
 
   // 商品追加処理
   const addItem = async () => {
@@ -132,15 +135,19 @@ function Master() {
         {/* 検索領域 */}
         <div className="header-search">
           {/* 検索用カテゴリ */}
-          <button onClick={() => setSeach(v => !v)} className="btn-seach">
-            検索
+          <button
+            className="btn-seach"
+            onClick={() => setSearchCategory("")}
+          >
+            ｃ
           </button>
           <input
             list="category-list"
             className="category"
-
+            placeholder="分類検索"
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
           />
-          まだできない
         </div>
       </div>
       {/* ===== 新規登録フォーム ===== */}
@@ -191,7 +198,8 @@ function Master() {
       </div>
 
       {/* ===== 商品一覧 ===== */}
-      {items.map((item) => (
+      {/* {items.map((item) => ( */}
+      {displayItems.map((item) => (
         <div className="card" key={item.id}>
 
           <div className="row-top">
