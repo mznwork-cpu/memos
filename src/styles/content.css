@@ -16,7 +16,7 @@
    ・共通ヘッダの下に固定される */
 .sub-header-fixed {
   position: sticky;
-  top: 90px;           /* 共通ヘッダ分だけ下げる */
+  top: 86px;           /* 共通ヘッダ分だけ下げる */
   background: var(--base-background);    /* 下の要素が透けないように */
   z-index: 900;
   padding-bottom: 10px;
