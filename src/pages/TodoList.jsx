@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { executeTodo } from "../services/Service";
 import { fetchTodoList } from "../services/Service";
+import { getUniqueCategories } from "../utils/utils";
 
 function TodoList() {
 
@@ -11,11 +12,17 @@ function TodoList() {
   // View（v_todo_list）から取得した一覧データ
   const [items, setItems] = useState([]);
 
+  // 既存カテゴリ一覧（重複なしで生成）
+  const [categories, setCategories] = useState([]);
+
   // 各行ごとの入力状態（チェック・メモ）
   const [dataMap, setDataMap] = useState({});
 
   // トースト表示用メッセージ
   const [toast, setToast] = useState("");
+
+  // 分類の検索値
+  const [searchCategory, setSearchCategory] = useState("");
 
   // 表示切替フラグ（true：期限のみ / false：全件表示）
   const [showDueOnly, setShowDueOnly] = useState(true);
@@ -36,12 +43,16 @@ function TodoList() {
   const loadItems = async () => {
 
     // データ取得
-    const list = await fetchTodoList();
-    setItems(list);
+    const data = await fetchTodoList();
+    setItems(data);
+
+        // カテゴリ候補を生成
+    const uniqueCategories = getUniqueCategories(data)
+    setCategories(uniqueCategories);
 
     // チェック状態とメモ入力用の初期値を作成
     const initial = {};
-    list.forEach(item => {
+    data.forEach(item => {
       initial[item.id] = {
         note: "",
         _checked: false
@@ -55,9 +66,18 @@ function TodoList() {
   // ■ 表示用データ（フィルタ）
   // ===============================
   // 期限のみ or 全件表示の切り替え
-  const displayItems = showDueOnly
-    ? items.filter(i => i.is_due)
-    : items;
+  // 分類絞込み表示
+    const displayItems = items.filter(item => {
+    // 分類
+      const categoryMatch =
+        !searchCategory ||
+        item.category === searchCategory;
+    // 期限
+      const dueMatch =
+        !showDueOnly ||
+        item.is_due;
+      return categoryMatch && dueMatch;
+    });
 
   // ===============================
   // ■ 実行処理
@@ -129,6 +149,28 @@ function TodoList() {
       <div className="sub-header-fixed">
         {/* 検索領域 */}
         <div className="header-search">
+          {/* 分類検索 */}
+          <button
+            className="btn-seach"
+            onClick={() => setSearchCategory("")}
+          >
+            C
+          </button>
+                    <input
+            list="category-list"
+            className="category"
+            placeholder="分類検索"
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+          />
+          {/* カテゴリ候補（datalist） */}
+          <datalist id="category-list">
+            {categories.map((c, i) => (
+              <option key={i} value={c} />
+            ))}
+          </datalist>
+
+          {/* 期限絞込みボタン */}
           <button onClick={() => setShowDueOnly(v => !v)} className="btn-seach">
             {showDueOnly
               ? "期限のみ"

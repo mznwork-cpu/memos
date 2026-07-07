@@ -139,7 +139,7 @@ function Master() {
             className="btn-seach"
             onClick={() => setSearchCategory("")}
           >
-            ｃ
+            C
           </button>
           <input
             list="category-list"
