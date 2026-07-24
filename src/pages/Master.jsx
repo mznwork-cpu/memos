@@ -106,7 +106,10 @@ function Master() {
     setEditName(item.name || "");
   };
 
-  // 編集保存
+
+  // ===============================
+  // ■ 編集保存
+  // ===============================
   const saveEdit = async (item) => {
 
     await supabase
@@ -121,6 +124,39 @@ function Master() {
     setEditingId(null);
 
     loadItems();
+  };
+// ===============================
+// ■ 削除処理
+// ===============================
+  const deleteItem = async (id) => { 
+    const ok = window.confirm("削除してもよろしいですか？");
+    if (!ok) return;
+
+    try {
+      // ① 履歴削除（先に削除）
+      await supabase
+       .from("purchase_history")
+       .delete()
+        .eq("item_id", id);
+      
+      // ② items削除（本体）
+      await supabase
+        .from("items")
+        .delete()
+        .eq("id", id);
+      
+      // フィードバック
+      alert("削除しました");
+      // トースト表示
+      
+
+      // 最新データを再取得
+      loadItems();
+    // 編集解除
+    setEditingId(null);
+    } catch (e) {
+      alert("削除に失敗しました");
+    }
   };
 
   // ===============================
@@ -230,8 +266,17 @@ function Master() {
                     onChange={(e) => setEditName(e.target.value)}
                   />
 
+                  {/* 保存 */}
                   <button onClick={() => saveEdit(item)}>
                     保存
+                  </button>
+
+                  {/* 削除 */}
+                  <button
+                    className="btn-delete"
+                    onClick={() => deleteItem(item.id)}
+                  >
+                    削除
                   </button>
 
                 </>

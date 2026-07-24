@@ -123,12 +123,10 @@ function TodoMaster() {
 // ■ 削除処理
 // ===============================
   const deleteItem = async (id) => {
-
     const ok = window.confirm("削除してよろしいですか？");
     if (!ok) return;
 
     try {
-
       // ① 履歴削除（先に削除）
       await supabase
        .from("purchase_history")
@@ -142,7 +140,6 @@ function TodoMaster() {
         .eq("id", id);
 
       // フィードバック
-      // （TodoMasterにはtoastないなら後で追加してもOK）
       alert("削除しました");
 
      // 一覧更新
@@ -152,7 +149,7 @@ function TodoMaster() {
       setEditingId(null);
 
    } catch (e) {
-     alert("削除エラー");
+     alert("削除に失敗しました");
    }
   };
 
@@ -238,12 +235,12 @@ function TodoMaster() {
             onChange={(e) => setEditRefDate(e.target.value)}
           />
 
-          {/* 保 存 */}
+          {/* 保存 */}
           <button onClick={() => saveEdit(item)}>
             保存
           </button>
 
-          {/* ★追加：削除 */}
+          {/* 削除 */}
           <button
             className="btn-delete"
             onClick={() => deleteItem(item.id)}
@@ -252,9 +249,9 @@ function TodoMaster() {
           </button>
 
         {/* ★追加：キャンセル */}
-          <button onClick={() => setEditingId(null)}>
+          {/* <button onClick={() => setEditingId(null)}>
             キャンセル
-          </button>
+          </button> */}
 
         </>
               ) : (
