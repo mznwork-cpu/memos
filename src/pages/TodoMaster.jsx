@@ -21,6 +21,11 @@ function TodoMaster() {
   // 入力補助用カテゴリ一覧（datalist用）
   const [categories, setCategories] = useState([]);
 
+  // トースト表示用メッセージ
+  const [toast, setToast] = useState("");
+  // ローディング状態
+  const [loading, setLoading] = useState(false);  
+
   // 編集状態管理
   const [editingId, setEditingId] = useState(null);   // 編集中のID
   const [editCategory, setEditCategory] = useState("");
@@ -140,8 +145,9 @@ function TodoMaster() {
         .eq("id", id);
 
       // フィードバック
-      alert("削除しました");
-
+      setToast("削除しました");
+      // トーストを一定時間で消す
+      setTimeout(() => setToast(""), 3000);
      // 一覧更新
       loadItems();
 
@@ -158,7 +164,12 @@ function TodoMaster() {
   // ===============================
   return (
     <div>
-
+      {/* トースト表示 */}
+      {toast && (
+        <div className="toast toast-success">
+          {toast}
+        </div>
+      )}
       <h1 className={"page-title todo"}>やること</h1>
 
       {/* ===== 新規登録フォーム ===== */}
